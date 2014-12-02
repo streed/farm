@@ -6,20 +6,27 @@ import com.google.common.collect.ImmutableList;
 import java.util.Collection;
 
 public class SensorSlug {
-    private int teamId;
+    private int farmId;
+    private int fieldId;
     private ImmutableList<SensorReading> readings;
 
     public SensorSlug() {
     }
 
-    public SensorSlug(final int teamId, final Collection<SensorReading> readings) {
-        this.teamId = teamId;
+    public SensorSlug(final int farmId, final int fieldId, final Collection<SensorReading> readings) {
+        this.farmId = farmId;
+        this.fieldId = fieldId;
         this.readings = ImmutableList.copyOf(readings);
     }
 
     @JsonProperty
-    public int getTeamId() {
-        return teamId;
+    public int getFarmId() {
+        return farmId;
+    }
+
+    @JsonProperty
+    public int getFieldId() {
+        return fieldId;
     }
 
     @JsonProperty
