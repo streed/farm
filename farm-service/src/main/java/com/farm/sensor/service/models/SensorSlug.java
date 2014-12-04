@@ -1,4 +1,4 @@
-package com.farm.service.models;
+package com.farm.sensor.service.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.ImmutableList;
@@ -6,27 +6,27 @@ import com.google.common.collect.ImmutableList;
 import java.util.Collection;
 
 public class SensorSlug {
-    private int farmId;
-    private int fieldId;
+    private int ownerId;
+    private long timestamp;
     private ImmutableList<SensorReading> readings;
 
     public SensorSlug() {
     }
 
-    public SensorSlug(final int farmId, final int fieldId, final Collection<SensorReading> readings) {
-        this.farmId = farmId;
-        this.fieldId = fieldId;
+    public SensorSlug(final int ownerId, final long timestamp, final Collection<SensorReading> readings) {
+        this.ownerId = ownerId;
+        this.timestamp = timestamp;
         this.readings = ImmutableList.copyOf(readings);
     }
 
     @JsonProperty
-    public int getFarmId() {
-        return farmId;
+    public int getOwnerId() {
+        return ownerId;
     }
 
     @JsonProperty
-    public int getFieldId() {
-        return fieldId;
+    public long getTimestamp() {
+        return timestamp;
     }
 
     @JsonProperty
