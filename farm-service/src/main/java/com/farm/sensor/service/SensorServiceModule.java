@@ -8,6 +8,8 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import org.apache.flume.api.RpcClient;
 import org.apache.flume.api.RpcClientFactory;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hbase.HBaseConfiguration;
 
 import java.util.List;
 import java.util.Properties;
@@ -22,6 +24,11 @@ public class SensorServiceModule extends AbstractModule {
     @Singleton
     public RpcClient providesRpcCLient(final SensorServiceConfiguration sensorServiceConfiguration) {
         return RpcClientFactory.getInstance(buildProperties(sensorServiceConfiguration));
+    }
+
+    @Provides
+    public Configuration providesHbaseConfiguration() {
+        return HBaseConfiguration.create();
     }
 
     private Properties buildProperties(final SensorServiceConfiguration sensorServiceConfiguration) {
