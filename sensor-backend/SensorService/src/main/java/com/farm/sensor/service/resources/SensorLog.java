@@ -2,7 +2,7 @@ package com.farm.sensor.service.resources;
 
 import com.farm.sensor.service.exceptions.SensorServiceException;
 import com.farm.sensor.service.managers.SensorManager;
-import com.farm.sensor.service.models.SensorSlug;
+import com.farm.sensor.data.models.SensorSlug;
 import com.google.inject.Inject;
 
 import javax.validation.Valid;
