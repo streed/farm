@@ -25,7 +25,7 @@ public class SensorCreateSchema {
     }
 
     public static enum ColumnFamiles {
-        READINGS("readings-0");
+        READINGS_BODY("readings-body");
 
         private String name;
 
@@ -48,7 +48,7 @@ public class SensorCreateSchema {
         final HBaseAdmin admin = new HBaseAdmin(configuration);
         HTableDescriptor table = new HTableDescriptor(TableName.valueOf(TableNames.READINGS.getName()));
 
-        table.addFamily(new HColumnDescriptor(ColumnFamiles.READINGS.getName()).setCompressionType(Algorithm.SNAPPY));
+        table.addFamily(new HColumnDescriptor(ColumnFamiles.READINGS_BODY.getName()).setCompressionType(Algorithm.SNAPPY));
         admin.createTable(table);
     }
 }

@@ -1,5 +1,6 @@
 package com.farm.sensor.service.hbase;
 
+import com.farm.sensor.service.hbase.rowkeys.SensorSlugRowKey;
 import com.farm.sensor.service.hbase.utils.SensorCreateSchema;
 import com.farm.sensor.service.models.SensorSlug;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,6 +8,7 @@ import com.google.inject.Inject;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.client.Get;
 import org.apache.hadoop.hbase.client.HTable;
+import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Result;
 
 import java.io.IOException;
@@ -27,13 +29,28 @@ public class ReadingsTable {
     }
 
     public SensorSlug getSlug(final SensorSlugRowKey rowKey) throws IOException {
-        Get get = new Get(rowKey.getBytes());
+        Get get = new Get(rowKey.toBytes());
         Result result = hTable.get(get);
 
         return objectMapper.readValue(
                 result.getValue(
-                        SensorCreateSchema.ColumnFamiles.READINGS.getName().getBytes(),
+                        SensorCreateSchema.ColumnFamiles.READINGS_BODY.getName().getBytes(),
                         "reading".getBytes()),
                 SensorSlug.class);
+    }
+
+    public void saveSlug(final SensorSlug sensorSlug) throws IOException {
+        SensorSlugRowKey sensorSlugRowKey = new SensorSlugRowKey(sensorSlug.getOwnerId(), sensorSlug.getTimestamp());
+        Put put = new Put(sensorSlugRowKey.toBytes());
+
+        put.add("reading".getBytes(),
+                SensorCreateSchema.ColumnFamiles.READINGS_BODY.getName().getBytes(),
+                objectMapper.writeValueAsBytes(sensorSlug));
+
+        hTable.checkAndPut(sensorSlugRowKey.toBytes(),
+                "reading".getBytes(),
+                SensorCreateSchema.ColumnFamiles.READINGS_BODY.getName().getBytes(),
+                null,
+                put);
     }
 }
