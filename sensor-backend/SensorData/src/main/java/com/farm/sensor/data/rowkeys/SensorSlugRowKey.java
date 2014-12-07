@@ -31,13 +31,13 @@ public class SensorSlugRowKey extends AbstractRowKey {
     protected void write(DataOutputBuffer dataOutputBuffer) throws IOException {
         dataOutputBuffer.writeInt(hashFunction.hashBytes(Bytes.toBytes(ownerId)).asInt());
         dataOutputBuffer.writeInt(ownerId);
-        dataOutputBuffer.writeLong(Long.MAX_VALUE - timestamp);
+        dataOutputBuffer.writeLong(timestamp);
     }
 
     protected void read(DataInputBuffer dataInputBuffer) throws IOException {
         dataInputBuffer.readInt();
 
         ownerId = dataInputBuffer.readInt();
-        timestamp = Long.MAX_VALUE - dataInputBuffer.readLong();
+        timestamp = dataInputBuffer.readLong();
     }
 }
