@@ -1,8 +1,8 @@
-package com.farm.sensor.service.hbase;
+package com.farm.sensor.data;
 
-import com.farm.sensor.service.hbase.rowkeys.SensorSlugRowKey;
-import com.farm.sensor.service.hbase.utils.SensorCreateSchema;
-import com.farm.sensor.service.models.SensorSlug;
+import com.farm.sensor.data.rowkeys.SensorSlugRowKey;
+import com.farm.sensor.data.utils.SensorCreateSchema;
+import com.farm.sensor.data.models.SensorSlug;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import org.apache.hadoop.conf.Configuration;

@@ -1,4 +1,4 @@
-package com.farm.sensor.service.models;
+package com.farm.sensor.data.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.ImmutableList;

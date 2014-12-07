@@ -1,4 +1,4 @@
-package com.farm.sensor.service.hbase.rowkeys;
+package com.farm.sensor.data.rowkeys;
 
 import org.apache.hadoop.io.DataInputBuffer;
 import org.apache.hadoop.io.DataOutputBuffer;

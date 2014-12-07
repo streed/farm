@@ -1,4 +1,4 @@
-package com.farm.sensor.service.hbase.rowkeys;
+package com.farm.sensor.data.rowkeys;
 
 import java.io.IOException;
 

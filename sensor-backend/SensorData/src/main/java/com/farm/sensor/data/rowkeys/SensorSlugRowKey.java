@@ -1,4 +1,4 @@
-package com.farm.sensor.service.hbase.rowkeys;
+package com.farm.sensor.data.rowkeys;
 
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;

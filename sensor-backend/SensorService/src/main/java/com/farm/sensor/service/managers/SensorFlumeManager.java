@@ -1,7 +1,7 @@
 package com.farm.sensor.service.managers;
 
 import com.farm.sensor.service.exceptions.SensorServiceException;
-import com.farm.sensor.service.models.SensorSlug;
+import com.farm.sensor.data.models.SensorSlug;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;

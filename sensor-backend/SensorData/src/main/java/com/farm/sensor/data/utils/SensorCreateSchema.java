@@ -1,4 +1,4 @@
-package com.farm.sensor.service.hbase.utils;
+package com.farm.sensor.data.utils;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HColumnDescriptor;
