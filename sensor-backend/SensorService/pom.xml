@@ -9,11 +9,6 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <properties>
-        <dropwizard.version>0.7.0</dropwizard.version>
-    </properties>
-
-    <groupId>com.farm</groupId>
     <artifactId>SensorService</artifactId>
     <packaging>pom</packaging>
 
