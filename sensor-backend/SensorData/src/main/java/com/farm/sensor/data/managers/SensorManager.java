@@ -1,4 +1,4 @@
-package com.farm.sensor.service.managers;
+package com.farm.sensor.data.managers;
 
 import com.farm.sensor.service.exceptions.SensorServiceException;
 import com.farm.sensor.data.models.SensorSlug;
