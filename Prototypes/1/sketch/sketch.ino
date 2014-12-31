@@ -32,7 +32,7 @@
  * Future work: 
  * - Remove 'featues'
  * - Set up circuit so that D2 and D3 can alternate as power and ground to lessen electrolytic effects
- * - Get ioref set up so that we get the full ADC range on the sensor
+ * - Get aref set up so that we get the full ADC range on the sensor (Internal = 1.1v or use external ref)
  */
 
 unsigned int pos;
@@ -58,6 +58,8 @@ void setup() {
   pos = EEPROM.read(POS_ADDR);
   
   Serial.begin(115200);
+  
+  //analogReference(INTERNAL);
 }
 
 void diag() {
