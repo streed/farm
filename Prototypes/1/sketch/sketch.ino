@@ -37,6 +37,8 @@
 
 unsigned int pos;
 unsigned int dumped = 0;
+unsigned int power = 2;
+unsigned int ground = 3;
 
 const unsigned int POS_ADDR = 1023;
 const unsigned int OVERFLOW_ADDR = 1022;
@@ -60,11 +62,22 @@ void setup() {
   Serial.begin(115200);
 }
 
+void swap(unsigned int& a, unsigned int &b) {
+  unsigned int t = a;
+  a = b;
+  b = t;
+}
+
 void diag() {
-  digitalWrite(2, HIGH);
+  digitalWrite(power, HIGH);
   delay(500); //settle time
   int sensorValue = analogRead(A0);
+  if(power == 3) {
+    sensorValue = 1020 - sensorValue;
+  }
   Serial.println(sensorValue);
+  digitalWrite(power, LOW);
+  swap(power, ground);
   delay(500);
 }
 
