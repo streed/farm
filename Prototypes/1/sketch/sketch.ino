@@ -27,6 +27,7 @@
  * Circuit: 
  * Set up a basic voltage divider with D2 as power, D3 as ground, and A0 reading the divided voltage.
  * D2/D3 can source/sink 40ma, which may or may not be sufficient for our needs. 
+ * 330 ohm seems to be a decent value for the divider resistor for proto 1A. 
  * 
  * Future work: 
  * - Remove 'featues'
@@ -100,7 +101,7 @@ void dump() {
 
 void store() {
   digitalWrite(2, HIGH); // TODO: alternate between 2 and 3 HIGH
-  delay(1); // TODO: empirically verify necessary settle time
+  delay(2000); // TODO: empirically verify necessary settle time
 
   int val = analogRead(A0);
   // Clamp val if it exceeds the set range
