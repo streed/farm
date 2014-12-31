@@ -102,7 +102,11 @@ void store() {
   digitalWrite(2, HIGH); // TODO: alternate between 2 and 3 HIGH
   delay(1); // TODO: empirically verify necessary settle time
 
-  int val = analogRead(A0)/4;
+  int val = analogRead(A0);
+  // Clamp val if it exceeds the set range
+  if(val > 255) {
+    val = 255;
+  }
     
   digitalWrite(2, LOW);
 
