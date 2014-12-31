@@ -61,9 +61,10 @@ void setup() {
 
 void diag() {
   digitalWrite(2, HIGH);
-  delay(1); //settle time
+  delay(500); //settle time
   int sensorValue = analogRead(A0);
   Serial.println(sensorValue);
+  delay(500);
 }
 
 void dump() {
