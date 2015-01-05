@@ -4,7 +4,7 @@
  * POC for water sensor prototype
  * 
  * Features:
- * - Write sensor values to EEPROM every 5 minutes
+ * - Write sensor values to EEPROM every 5 minutes (1021 values or 85 hours of data)
  * - Dump EEPROM data
  * - Diagnostic mode for checking things
  * - Sensor is not energized except when reading
@@ -14,7 +14,6 @@
  * 
  * 'Features':
  * - Values are written as an 8-bit number, which loses us 3/4 of our ADC resolution
- * - We can only store 255 values due to the way position is stored, which limits us to 21 hours and 15 minutes of data points
  * - Nothing is interrupt driven, so you may have to wait up to 5 minutes for your data dump to begin =D
  * 
  * Pin Assignments:
@@ -40,7 +39,8 @@ unsigned int dumped = 0;
 
 const unsigned int POS_ADDR = 1023;
 const unsigned int OVERFLOW_ADDR = 1022;
-const unsigned int MAX_ADDR = 255; // TODO: fix pos storage so we can store more data
+const unsigned int MAX_OVERFLOW = 0b00111111;
+const unsigned int MAX_ADDR = 1021;
 
 void setup() {
   // Sensor power I/O
@@ -56,10 +56,16 @@ void setup() {
   pinMode(7, INPUT_PULLUP);
   
   pos = EEPROM.read(POS_ADDR);
+  int overflows = EEPROM.read(OVERFLOW_ADDR);
+  pos |= (overflows & 0b11000000) << 8;
   
   Serial.begin(115200);
   
   //analogReference(INTERNAL);
+}
+
+unsigned int top_two(unsigned int x) {
+  return (x >> 2) & 0b11000000;
 }
 
 void diag() {
@@ -75,9 +81,9 @@ void dump() {
   
   int overflows = EEPROM.read(OVERFLOW_ADDR);
   Serial.print("Overflows: ");
-  Serial.println(overflows);
+  Serial.println(overflows & MAX_OVERFLOW);
   
-  if(overflows) {
+  if(overflows & MAX_OVERFLOW) {
     for(unsigned int i = pos; i <= MAX_ADDR; i++) {
       Serial.print(i);
       Serial.print(" : ");
@@ -121,12 +127,21 @@ void store() {
   // Track overflows in the last EEPROM slot
   if(pos > MAX_ADDR) {
     int overflows = EEPROM.read(OVERFLOW_ADDR);
-    EEPROM.write(pos, overflows + 1);
-    pos = 0;
+    overflows &= MAX_OVERFLOW;
+    if(overflows < MAX_OVERFLOW) {
+      EEPROM.write(OVERFLOW_ADDR, overflows + 1);
+      pos = 0;
+    }
   }
   
   // Store position
   EEPROM.write(POS_ADDR, pos);
+  if(pos > 0 && top_two(pos - 1) != top_two(pos)) {
+    int overflows = EEPROM.read(OVERFLOW_ADDR);
+    overflows &= MAX_OVERFLOW;
+    overflows |= top_two(pos);
+    EEPROM.write(OVERFLOW_ADDR, overflows);
+  }
 
   // Five minutes between reads
   delay(5 * 60 * 1000);
