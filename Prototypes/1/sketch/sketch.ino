@@ -4,7 +4,7 @@
  * POC for water sensor prototype
  * 
  * Features:
- * - Write sensor values to EEPROM every 5 minutes (1021 values or 85 hours of data)
+ * - Write two sensor values to EEPROM every 5 minutes (511 values or ~42 hours of data)
  * - Dump EEPROM data
  * - Diagnostic mode for checking things
  * - Sensor is not energized except when reading
@@ -18,8 +18,11 @@
  * 
  * Pin Assignments:
  * - Analog 0: Sensor Value
+ * - Analog 1: Second sensor value
  * - Digital 2: Sensor power
- * - Digital 3: Sensor power
+ * - Digital 3: Sensor power 
+ * - Digital 4: Sensor 2 power
+ * - Digital 5: Sensor 2 power
  * - Digital 7: Pull low for data dump
  * - Digital 8: Pull low for diagnostic output
  * 
@@ -49,6 +52,11 @@ void setup() {
   digitalWrite(2, LOW);
   digitalWrite(3, LOW);
   
+  pinMode(4, OUTPUT);
+  pinMode(5, OUTPUT);
+  digitalWrite(4, LOW);
+  digitalWrite(5, LOW);
+  
   // Diagnostic switch
   pinMode(8, INPUT_PULLUP);
   
@@ -70,8 +78,12 @@ unsigned int top_two(unsigned int x) {
 
 void diag() {
   digitalWrite(2, HIGH);
+  digitalWrite(4, HIGH);
   delay(500); //settle time
   int sensorValue = analogRead(A0);
+  Serial.print(sensorValue);
+  sensorValue = analogRead(A1);
+  Serial.print(" ");
   Serial.println(sensorValue);
   delay(500);
 }
@@ -85,15 +97,21 @@ void dump() {
   
   if(overflows & MAX_OVERFLOW) {
     for(unsigned int i = pos; i <= MAX_ADDR; i++) {
-      Serial.print(i);
+      Serial.print(i/2);
       Serial.print(" : ");
+      Serial.print(EEPROM.read(i));
+      i++;
+      Serial.print(" ");
       Serial.println(EEPROM.read(i));
     }
   }
   
   for(unsigned int i = 0; i < pos; i++) {
-    Serial.print(i);
+    Serial.print(i/2);
     Serial.print(" : ");
+    Serial.print(EEPROM.read(i));
+    i++;
+    Serial.print(" ");
     Serial.println(EEPROM.read(i));
   }
   
@@ -109,6 +127,7 @@ void dump() {
 
 void store() {
   digitalWrite(2, HIGH); // TODO: alternate between 2 and 3 HIGH
+  digitalWrite(4, HIGH);
   delay(2000); // TODO: empirically verify necessary settle time
 
   int val = analogRead(A0);
@@ -116,12 +135,23 @@ void store() {
   if(val > 255) {
     val = 255;
   }
+  
+  int val2 = analogRead(A1);
+  // Clamp val if it exceeds the set range
+  if(val2 > 255) {
+    val2 = 255;
+  }
     
   digitalWrite(2, LOW);
+  digitalWrite(4, LOW);
 
   // Write data
   EEPROM.write(pos, val);
-  Serial.println(val);
+  pos++;
+  EEPROM.write(pos, val2);
+  Serial.print(val);
+  Serial.print(" ");
+  Serial.println(val2);
   
   pos++;
   // Track overflows in the last EEPROM slot
