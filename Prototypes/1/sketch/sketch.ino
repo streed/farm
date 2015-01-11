@@ -77,15 +77,32 @@ unsigned int top_two(unsigned int x) {
 }
 
 void diag() {
+  pinMode(2, OUTPUT);
+  pinMode(3, OUTPUT);
   digitalWrite(2, HIGH);
-  digitalWrite(4, HIGH);
-  delay(500); //settle time
+  digitalWrite(3, LOW);
+  delay(250); //settle time
   int sensorValue = analogRead(A0);
   Serial.print(sensorValue);
+  digitalWrite(2, LOW);
+  pinMode(2, INPUT);
+  pinMode(3, INPUT);
+  
+  delay(250);
+  
+  pinMode(4, OUTPUT);
+  pinMode(5, OUTPUT);
+  digitalWrite(4, HIGH);
+  digitalWrite(5, LOW);
+  delay(250); //settle time
   sensorValue = analogRead(A1);
   Serial.print(" ");
   Serial.println(sensorValue);
-  delay(500);
+  digitalWrite(4, LOW);
+  pinMode(4, INPUT);
+  pinMode(5, INPUT);
+  
+  delay(250);
 }
 
 void dump() {
