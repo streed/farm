@@ -14,6 +14,10 @@ public class SensorSlugRowKey extends AbstractRowKey {
     private int ownerId;
     private long timestamp;
 
+    public SensorSlugRowKey(final int ownerId) {
+        this(ownerId, 0L);
+    }
+
     public SensorSlugRowKey(final int ownerId, final long timestamp) {
         this.ownerId = ownerId;
         this.timestamp = timestamp;

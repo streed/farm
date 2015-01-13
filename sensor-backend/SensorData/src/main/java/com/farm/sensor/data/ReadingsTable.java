@@ -4,6 +4,7 @@ import com.farm.sensor.data.rowkeys.SensorSlugRowKey;
 import com.farm.sensor.data.utils.SensorCreateSchema;
 import com.farm.sensor.data.models.SensorSlug;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.client.*;
@@ -37,8 +38,19 @@ public class ReadingsTable {
                 SensorSlug.class);
     }
 
-    public List<SensorSlug> getSlugsForOwner(final SensorSlugRowKey rowKey) {
-        Scan scan = new Scan()
+    public List<SensorSlug> getSlugsForOwner(final SensorSlugRowKey rowKey) throws IOException {
+        Scan scan = new Scan();
+        scan.addFamily(SensorCreateSchema.ColumnFamiles.READINGS_BODY.getName().getBytes());
+        scan.setStartRow(rowKey.toBytes());
+        ResultScanner scanner = hTable.getScanner(scan);
+
+        List<SensorSlug> sensorSlugs = Lists.newArrayList();
+        for (Result result : scanner) {
+            SensorSlug sensorSlug = objectMapper.readValue(result.getValue(SensorCreateSchema.ColumnFamiles.READINGS_BODY.getName().getBytes(), "reading".getBytes());
+            sensorSlugs.add(sensorSlug);
+        }
+
+        return sensorSlugs;
     }
 
     public void saveSlug(final SensorSlug sensorSlug) throws IOException {
