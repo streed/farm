@@ -14,7 +14,7 @@
         <jackson.version>2.4.0</jackson.version>
     </properties>
 
-    <repositories>
+    <!--<repositories>
         <repository>
             <id>central</id>
             <url>https://repo1.maven.org/maven2</url>
@@ -22,10 +22,10 @@
                 <enabled>true</enabled>
             </releases>
         </repository>
-    </repositories>
+    </repositories> -->
 
     <modules>
-        <module>SensorFlume</module>
+        <!-- <module>SensorFlume</module> -->
         <module>SensorData</module>
         <module>SensorService</module>
     </modules>

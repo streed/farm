@@ -10,17 +10,17 @@ import java.io.IOException;
 import java.util.List;
 
 public class SensorManager {
-    private final SensorFlumeManager sensorFlumeManager;
+    private final SensorSlugPublisher sensorSlugPublisher;
     private final ReadingsTable readingsTable;
 
     @Inject
-    public SensorManager(final SensorFlumeManager sensorFlumeManager, final ReadingsTable readingsTable) {
-        this.sensorFlumeManager = sensorFlumeManager;
+    public SensorManager(final SensorSlugPublisher sensorSlugPublisher, final ReadingsTable readingsTable) {
+        this.sensorSlugPublisher = sensorSlugPublisher;
         this.readingsTable = readingsTable;
     }
 
     public void publish(final SensorSlug sensorSlug) throws SensorServiceException, IOException {
-        sensorFlumeManager.publish(sensorSlug);
+        sensorSlugPublisher.publish(sensorSlug);
         readingsTable.saveSlug(sensorSlug);
     }
 

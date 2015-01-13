@@ -4,22 +4,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import java.util.List;
 
 
 public class SensorServiceConfiguration extends Configuration {
     @NotEmpty
-    private List<String> flumeServers;
+    private String redisServer;
 
     @JsonProperty
-    public List<String> getFlumeServers() {
-        return flumeServers;
+    public String getRedisHost() {
+        return redisServer;
     }
 
-    private int flumeBackOff = 10000;
-
-    @JsonProperty
-    public int getFlumeBackOff() {
-        return flumeBackOff;
-    }
 }
