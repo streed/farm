@@ -6,12 +6,10 @@ import com.farm.sensor.data.models.SensorSlug;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.hbase.client.Get;
-import org.apache.hadoop.hbase.client.HTable;
-import org.apache.hadoop.hbase.client.Put;
-import org.apache.hadoop.hbase.client.Result;
+import org.apache.hadoop.hbase.client.*;
 
 import java.io.IOException;
+import java.util.List;
 
 public class ReadingsTable {
     private final Configuration configuration;
@@ -37,6 +35,10 @@ public class ReadingsTable {
                         SensorCreateSchema.ColumnFamiles.READINGS_BODY.getName().getBytes(),
                         "reading".getBytes()),
                 SensorSlug.class);
+    }
+
+    public List<SensorSlug> getSlugsForOwner(final SensorSlugRowKey rowKey) {
+        Scan scan = new Scan()
     }
 
     public void saveSlug(final SensorSlug sensorSlug) throws IOException {
