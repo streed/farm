@@ -46,7 +46,7 @@ public class ReadingsTable {
 
         List<SensorSlug> sensorSlugs = Lists.newArrayList();
         for (Result result : scanner) {
-            SensorSlug sensorSlug = objectMapper.readValue(result.getValue(SensorCreateSchema.ColumnFamiles.READINGS_BODY.getName().getBytes(), "reading".getBytes());
+            SensorSlug sensorSlug = objectMapper.readValue(result.getValue(SensorCreateSchema.ColumnFamiles.READINGS_BODY.getName().getBytes(), "reading".getBytes()), SensorSlug.class);
             sensorSlugs.add(sensorSlug);
         }
 
