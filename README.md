@@ -13,3 +13,5 @@ export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home
 ```
 
 Install `apache-flume` version `1.5.2` as well as `apache-hbase` version `hbase-0.98.8-hadoop2`.
+
+For now we will use Redis. 
