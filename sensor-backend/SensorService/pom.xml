@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>SensorService</artifactId>
-    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
 
     <dependencies>
         <dependency>
@@ -23,11 +23,6 @@
             <artifactId>dropwizard-guice</artifactId>
             <version>0.7.0.2</version>
         </dependency>
-        <!-- <dependency>
-            <groupId>com.farm</groupId>
-            <artifactId>SensorFlume</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency> -->
         <dependency>
             <groupId>com.farm</groupId>
             <artifactId>SensorData</artifactId>

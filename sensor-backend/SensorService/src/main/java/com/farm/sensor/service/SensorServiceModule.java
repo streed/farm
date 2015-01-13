@@ -1,7 +1,6 @@
 package com.farm.sensor.service;
 
 import com.google.inject.AbstractModule;
-import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import org.apache.hadoop.conf.Configuration;
@@ -14,11 +13,11 @@ public class SensorServiceModule extends AbstractModule {
     protected void configure() {
     }
 
-    @Inject
     @Provides
     @Singleton
-    public JedisPool providesJedisPool(final SensorServiceConfiguration sensorServiceConfiguration) {
-        return new JedisPool(new JedisPoolConfig(), sensorServiceConfiguration.getRedisHost());
+    public JedisPool providesJedisPool() {
+        //TODO: Fix this so it's configurable
+        return new JedisPool(new JedisPoolConfig(), "localhost");
     }
 
     @Provides

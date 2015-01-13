@@ -15,7 +15,6 @@ public class SensorServiceApplication extends Application<SensorServiceConfigura
     @Override
     public void initialize(Bootstrap<SensorServiceConfiguration> bootstrap) {
         GuiceBundle<SensorServiceConfiguration> guiceBundle = GuiceBundle.<SensorServiceConfiguration>newBuilder()
-                .enableAutoConfig(getClass().getPackage().getName())
                 .addModule(new SensorServiceModule())
                 .enableAutoConfig(Package.getPackage("com.farm.sensor.service").getName())
                 .setConfigClass(SensorServiceConfiguration.class)
