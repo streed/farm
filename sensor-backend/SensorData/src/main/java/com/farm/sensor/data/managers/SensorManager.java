@@ -1,6 +1,6 @@
 package com.farm.sensor.data.managers;
 
-import com.farm.sensor.data.ReadingsTable;
+import com.farm.sensor.data.tables.ReadingsTable;
 import com.farm.sensor.data.exceptions.SensorServiceException;
 import com.farm.sensor.data.models.SensorSlug;
 import com.farm.sensor.data.rowkeys.SensorSlugRowKey;

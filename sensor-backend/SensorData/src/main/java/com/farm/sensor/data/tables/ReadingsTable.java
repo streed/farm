@@ -1,8 +1,8 @@
-package com.farm.sensor.data;
+package com.farm.sensor.data.tables;
 
 import com.farm.sensor.data.rowkeys.SensorSlugRowKey;
-import com.farm.sensor.data.tasks.SensorCreateSchema;
 import com.farm.sensor.data.models.SensorSlug;
+import com.farm.sensor.data.tasks.SensorCreateSchema;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
@@ -29,7 +29,20 @@ public class ReadingsTable {
     }
 
     public void connect() throws IOException {
-        this.hTable = new HTable(configuration, SensorCreateSchema.TableNames.READINGS.getName());
+        hTable = new HTable(configuration, SensorCreateSchema.TableNames.READINGS.getName());
+    }
+
+    public void shutdown() throws Exception {
+        if (hTable == null) {
+            throw new RuntimeException("connect() was not called on the ReadingsTable, cannont shutdown something that was never alive");
+        } else {
+            hTable.close();
+        }
+    }
+
+    public boolean isConnected() {
+        //TODO: Figure out how to do this
+        return true;
     }
 
     public SensorSlug getSlug(final SensorSlugRowKey rowKey) throws IOException {

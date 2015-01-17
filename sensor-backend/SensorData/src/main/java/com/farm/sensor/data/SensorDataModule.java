@@ -5,6 +5,8 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hbase.HBaseConfiguration;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
@@ -28,5 +30,10 @@ public class SensorDataModule extends AbstractModule {
     @Named("com.farm.publish.channels")
     public Set<String> providesPublishChannels() {
         return Sets.newHashSet("slugs");
+    }
+
+    @Provides
+    public Configuration providesHbaseConfiguration() {
+        return HBaseConfiguration.create();
     }
 }
