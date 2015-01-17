@@ -60,6 +60,7 @@ public abstract class TaskRunner {
                     taskOptions.addOption((Option)option);
                 }
                 task.setup(basicParser.parse(taskOptions, args));
+                task.run();
             } catch (UnrecognizedOptionException exception) {
                 HelpFormatter helpFormatter = new HelpFormatter();
                 helpFormatter.printHelp("task runner", options);
