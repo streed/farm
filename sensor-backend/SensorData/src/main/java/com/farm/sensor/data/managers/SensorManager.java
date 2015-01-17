@@ -11,14 +11,17 @@ import java.util.List;
 
 public class SensorManager {
     private final ReadingsTable readingsTable;
+    private final SensorSlugPublisher sensorSlugPublisher;
 
     @Inject
-    public SensorManager(final ReadingsTable readingsTable) {
+    public SensorManager(final ReadingsTable readingsTable, final SensorSlugPublisher sensorSlugPublisher) {
         this.readingsTable = readingsTable;
+        this.sensorSlugPublisher = sensorSlugPublisher;
     }
 
     public void publish(final SensorSlug sensorSlug) throws SensorServiceException, IOException {
         readingsTable.saveSlug(sensorSlug);
+        sensorSlugPublisher.publish(sensorSlug);
     }
 
     public SensorSlug getSensorSlug(final int ownerId, final int sensorId) throws IOException {

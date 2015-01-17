@@ -34,7 +34,7 @@ public class SensorLog {
     @Path("/{ownerId}/{sensorId}")
     public SensorSlug getSensorValue(final @PathParam("ownerId") int ownerId, final @PathParam("sensorId") int sensorId) throws IOException {
         Preconditions.checkArgument(ownerId > 0, "OwnerId must be greater than 0");
-        Preconditions.checkArgument(sensorId > 0, "OwnerId must be greater than 0");
+        Preconditions.checkArgument(sensorId > 0, "SensorId must be greater than 0");
         return sensorManager.getSensorSlug(ownerId, sensorId);
     }
 
