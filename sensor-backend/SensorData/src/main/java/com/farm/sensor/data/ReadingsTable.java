@@ -1,7 +1,7 @@
 package com.farm.sensor.data;
 
 import com.farm.sensor.data.rowkeys.SensorSlugRowKey;
-import com.farm.sensor.data.utils.SensorCreateSchema;
+import com.farm.sensor.data.tasks.SensorCreateSchema;
 import com.farm.sensor.data.models.SensorSlug;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
@@ -31,26 +31,23 @@ public class ReadingsTable {
         Get get = new Get(rowKey.toBytes());
         Result result = hTable.get(get);
 
-        return objectMapper.readValue(
-                result.getValue(
-                        SensorCreateSchema.ColumnFamiles.READINGS_BODY.getName().getBytes(),
-                        "reading".getBytes()),
-                SensorSlug.class);
+        return readResult(result);
     }
 
     public List<SensorSlug> getSlugsForOwner(final SensorSlugRowKey rowKey) throws IOException {
         Scan scan = new Scan();
-        scan.addFamily(SensorCreateSchema.ColumnFamiles.READINGS_BODY.getName().getBytes());
-        scan.setStartRow(rowKey.toBytes());
-        ResultScanner scanner = hTable.getScanner(scan);
 
-        List<SensorSlug> sensorSlugs = Lists.newArrayList();
-        for (Result result : scanner) {
-            SensorSlug sensorSlug = objectMapper.readValue(result.getValue(SensorCreateSchema.ColumnFamiles.READINGS_BODY.getName().getBytes(), "reading".getBytes()), SensorSlug.class);
-            sensorSlugs.add(sensorSlug);
+        scan.setStartRow(rowKey.toBytes());
+        scan.addFamily(SensorCreateSchema.ColumnFamiles.READINGS_BODY.getName().getBytes());
+
+        ResultScanner results = hTable.getScanner(scan);
+
+        List<SensorSlug> slugs = Lists.newArrayList();
+        for (Result result: results) {
+            slugs.add(readResult(result));
         }
 
-        return sensorSlugs;
+        return slugs;
     }
 
     public void saveSlug(final SensorSlug sensorSlug) throws IOException {
@@ -66,5 +63,13 @@ public class ReadingsTable {
                 SensorCreateSchema.ColumnFamiles.READINGS_BODY.getName().getBytes(),
                 null,
                 put);
+    }
+
+    private SensorSlug readResult(Result result) throws IOException {
+        return objectMapper.readValue(
+                result.getValue(
+                        SensorCreateSchema.ColumnFamiles.READINGS_BODY.getName().getBytes(),
+                        "reading".getBytes()),
+                SensorSlug.class);
     }
 }

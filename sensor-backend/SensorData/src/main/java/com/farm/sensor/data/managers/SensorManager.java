@@ -10,18 +10,18 @@ import java.io.IOException;
 import java.util.List;
 
 public class SensorManager {
-    private final SensorSlugPublisher sensorSlugPublisher;
     private final ReadingsTable readingsTable;
+    private final SensorSlugPublisher sensorSlugPublisher;
 
     @Inject
-    public SensorManager(final SensorSlugPublisher sensorSlugPublisher, final ReadingsTable readingsTable) {
-        this.sensorSlugPublisher = sensorSlugPublisher;
+    public SensorManager(final ReadingsTable readingsTable, final SensorSlugPublisher sensorSlugPublisher) {
         this.readingsTable = readingsTable;
+        this.sensorSlugPublisher = sensorSlugPublisher;
     }
 
     public void publish(final SensorSlug sensorSlug) throws SensorServiceException, IOException {
-        sensorSlugPublisher.publish(sensorSlug);
         readingsTable.saveSlug(sensorSlug);
+        sensorSlugPublisher.publish(sensorSlug);
     }
 
     public SensorSlug getSensorSlug(final int ownerId, final int sensorId) throws IOException {
@@ -29,6 +29,6 @@ public class SensorManager {
     }
 
     public List<SensorSlug> getSensorSlugsForOwner(final int ownerId) throws IOException {
-        return readingsTable.getSlugsForOwner(new SensorSlugRowKey(ownerId));
+        return readingsTable.getSlugsForOwner(new SensorSlugRowKey(ownerId, 0L));
     }
 }

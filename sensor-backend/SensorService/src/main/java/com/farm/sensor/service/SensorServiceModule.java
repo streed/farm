@@ -7,18 +7,14 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseConfiguration;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
+import com.farm.sensor.data.SensorDataModule;
 
 public class SensorServiceModule extends AbstractModule {
     @Override
     protected void configure() {
+        install(new SensorDataModule());
     }
 
-    @Provides
-    @Singleton
-    public JedisPool providesJedisPool() {
-        //TODO: Fix this so it's configurable
-        return new JedisPool(new JedisPoolConfig(), "localhost");
-    }
 
     @Provides
     public Configuration providesHbaseConfiguration() {
