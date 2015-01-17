@@ -37,7 +37,7 @@ public abstract class TaskRunner {
         }
     }
 
-    public void run(String [] args) throws ParseException {
+    public void run(String [] args) throws Exception {
         if (args.length == 0) {
             HelpFormatter helpFormatter = new HelpFormatter();
             helpFormatter.printHelp("task runner", options);

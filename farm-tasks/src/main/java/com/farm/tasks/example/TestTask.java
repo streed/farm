@@ -28,7 +28,7 @@ public class TestTask implements Task {
     }
 
     @Override
-    public void run() {
+    public void run() throws Exception {
         System.out.println("I am alive and I was passed " + value + " from guice :D");
     }
 }

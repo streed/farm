@@ -1,5 +1,9 @@
-package com.farm.sensor.data.utils;
+package com.farm.sensor.data.tasks;
 
+import com.farm.tasks.Task;
+import com.google.inject.Inject;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.Options;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HColumnDescriptor;
 import org.apache.hadoop.hbase.HTableDescriptor;
@@ -9,7 +13,7 @@ import org.apache.hadoop.hbase.io.compress.Compression.Algorithm;
 
 import java.io.IOException;
 
-public class SensorCreateSchema {
+public class SensorCreateSchema implements Task {
     public static enum TableNames {
         READINGS("sensor-readings-0");
 
@@ -40,11 +44,21 @@ public class SensorCreateSchema {
 
     private final Configuration configuration;
 
+    @Inject
     public SensorCreateSchema(Configuration configuration) {
         this.configuration = configuration;
     }
 
-    public void createTables() throws IOException {
+    @Override
+    public Options getOptions() {
+        return new Options();
+    }
+
+    @Override
+    public void setup(CommandLine commandLine) {
+    }
+
+    public void run() throws Exception {
         final HBaseAdmin admin = new HBaseAdmin(configuration);
         HTableDescriptor table = new HTableDescriptor(TableName.valueOf(TableNames.READINGS.getName()));
 
