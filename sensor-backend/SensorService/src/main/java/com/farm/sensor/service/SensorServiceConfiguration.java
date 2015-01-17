@@ -15,4 +15,8 @@ public class SensorServiceConfiguration extends Configuration {
         return redisServer;
     }
 
+    @JsonProperty
+    public void setRedisServer(String redisServer) {
+        this.redisServer = redisServer;
+    }
 }

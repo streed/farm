@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
@@ -26,7 +27,7 @@ public class SensorSlugPublisher {
     private Publisher publisher;
 
     @Inject
-    public SensorSlugPublisher(final JedisPool jedisPool, final ObjectMapper objectMapper, final Set<String> publishChannels) {
+    public SensorSlugPublisher(final JedisPool jedisPool, final ObjectMapper objectMapper, @Named("com.farm.publish.channels") final Set<String> publishChannels) {
         this.jedisPool = jedisPool;
         this.objectMapper = objectMapper;
         this.threadFactory = MoreExecutors.platformThreadFactory();

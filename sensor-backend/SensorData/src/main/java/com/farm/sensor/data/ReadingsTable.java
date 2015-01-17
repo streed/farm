@@ -6,12 +6,14 @@ import com.farm.sensor.data.models.SensorSlug;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.client.*;
 
 import java.io.IOException;
 import java.util.List;
 
+@Singleton
 public class ReadingsTable {
     private final Configuration configuration;
     private final ObjectMapper objectMapper;
@@ -54,15 +56,16 @@ public class ReadingsTable {
         SensorSlugRowKey sensorSlugRowKey = new SensorSlugRowKey(sensorSlug.getOwnerId(), sensorSlug.getTimestamp());
         Put put = new Put(sensorSlugRowKey.toBytes());
 
-        put.add("reading".getBytes(),
-                SensorCreateSchema.ColumnFamiles.READINGS_BODY.getName().getBytes(),
+        put.add(SensorCreateSchema.ColumnFamiles.READINGS_BODY.getName().getBytes(),
+                "reading".getBytes(),
                 objectMapper.writeValueAsBytes(sensorSlug));
 
-        hTable.checkAndPut(sensorSlugRowKey.toBytes(),
+        hTable.put(put);
+        /*hTable.checkAndPut(sensorSlugRowKey.toBytes(),
                 "reading".getBytes(),
                 SensorCreateSchema.ColumnFamiles.READINGS_BODY.getName().getBytes(),
                 null,
-                put);
+                put);*/
     }
 
     private SensorSlug readResult(Result result) throws IOException {

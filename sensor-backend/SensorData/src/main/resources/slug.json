@@ -1,0 +1,14 @@
+{
+  "ownerId": 1,
+  "timestamp": 1,
+  "readings": [
+    {
+      "sensorId": 1,
+      "timestamp": 1,
+      "value": 0.5,
+      "tags": [
+        "test"
+      ]
+    }
+  ]
+}

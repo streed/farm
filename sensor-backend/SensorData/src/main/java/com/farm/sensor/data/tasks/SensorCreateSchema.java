@@ -9,9 +9,6 @@ import org.apache.hadoop.hbase.HColumnDescriptor;
 import org.apache.hadoop.hbase.HTableDescriptor;
 import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.HBaseAdmin;
-import org.apache.hadoop.hbase.io.compress.Compression.Algorithm;
-
-import java.io.IOException;
 
 public class SensorCreateSchema implements Task {
     public static enum TableNames {
@@ -62,7 +59,8 @@ public class SensorCreateSchema implements Task {
         final HBaseAdmin admin = new HBaseAdmin(configuration);
         HTableDescriptor table = new HTableDescriptor(TableName.valueOf(TableNames.READINGS.getName()));
 
-        table.addFamily(new HColumnDescriptor(ColumnFamiles.READINGS_BODY.getName()).setCompressionType(Algorithm.SNAPPY));
+        table.addFamily(new HColumnDescriptor(ColumnFamiles.READINGS_BODY.getName()));
         admin.createTable(table);
+        admin.close();
     }
 }
