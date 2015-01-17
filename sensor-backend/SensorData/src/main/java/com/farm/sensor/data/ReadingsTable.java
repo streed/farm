@@ -9,12 +9,15 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.client.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.List;
 
 @Singleton
 public class ReadingsTable {
+    private final Logger LOG = LoggerFactory.getLogger(ReadingsTable.class);
     private final Configuration configuration;
     private final ObjectMapper objectMapper;
     private HTable hTable = null;
@@ -60,12 +63,12 @@ public class ReadingsTable {
                 "reading".getBytes(),
                 objectMapper.writeValueAsBytes(sensorSlug));
 
-        hTable.put(put);
-        /*hTable.checkAndPut(sensorSlugRowKey.toBytes(),
-                "reading".getBytes(),
-                SensorCreateSchema.ColumnFamiles.READINGS_BODY.getName().getBytes(),
-                null,
-                put);*/
+        Get get = new Get(sensorSlugRowKey.toBytes());
+        if (!hTable.exists(get)) {
+            hTable.put(put);
+        } else {
+            LOG.info("Got duplicate write for: {}", sensorSlug);
+        }
     }
 
     private SensorSlug readResult(Result result) throws IOException {

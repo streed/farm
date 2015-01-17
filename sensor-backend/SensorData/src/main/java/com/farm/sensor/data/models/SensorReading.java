@@ -1,6 +1,7 @@
 package com.farm.sensor.data.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 
 import java.util.List;
@@ -43,5 +44,33 @@ public class SensorReading {
     @JsonProperty
     public List<String> getTags() {
         return tags;
+    }
+
+    @Override
+    public String toString() {
+        return Objects.toStringHelper(SensorReading.class)
+                .add("sensorId", sensorId)
+                .add("timestamp", timestamp)
+                .add("value", value)
+                .add("tags", tags)
+                .toString();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof SensorReading)) {
+            return false;
+        }
+
+        SensorReading b = (SensorReading)obj;
+
+        return sensorId == b.sensorId &&
+                timestamp == b.timestamp &&
+                Double.compare(value, b.value) == 0 &&
+                Objects.equal(tags, b.tags);
     }
 }
