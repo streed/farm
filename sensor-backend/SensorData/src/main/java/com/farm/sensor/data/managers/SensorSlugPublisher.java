@@ -6,7 +6,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.google.inject.name.Named;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
@@ -17,7 +20,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-
+@Singleton
 public class SensorSlugPublisher {
     private final JedisPool jedisPool;
     private final ObjectMapper objectMapper;
@@ -44,13 +47,14 @@ public class SensorSlugPublisher {
         publisher.close();
     }
 
+    //TODO: Make this an executor pool, a single thread should suffice for now.
     private void startPublisher() {
         publisher = new Publisher(objectMapper, jedisPool, channels);
         threadFactory.newThread(publisher);
     }
 
     private static class Publisher implements Runnable {
-
+        private final Logger LOG = LoggerFactory.getLogger(Publisher.class);
         private final ObjectMapper objectMapper;
         private final Jedis jedis;
         private final JedisPool jedisPool;
@@ -71,6 +75,7 @@ public class SensorSlugPublisher {
             try {
                 slugQueue.put(sensorSlug);
             } catch (InterruptedException exception) {
+                LOG.error("Error while putting SensorSlug {} onto the queue", sensorSlug, exception);
                 cleanup();
             }
         }
@@ -81,6 +86,7 @@ public class SensorSlugPublisher {
 
         @Override
         public void run() {
+            LOG.info("Starting the Publisher processing thread");
             try {
                 while (running.get()) {
                     SensorSlug slug = slugQueue.take();
@@ -89,8 +95,10 @@ public class SensorSlugPublisher {
                     }
                 }
             } catch (InterruptedException | JsonProcessingException exception) {
+                LOG.error("Something broke while trying to publish to {} channels", channels, exception);
             }
 
+            LOG.info("Cleaning up the Publisher did we exit gracefully? {}", running.get());
             cleanup();
         }
 
