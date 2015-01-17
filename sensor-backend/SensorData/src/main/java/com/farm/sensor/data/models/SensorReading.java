@@ -1,22 +1,24 @@
 package com.farm.sensor.data.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+
+import java.util.List;
 
 public class SensorReading {
     private long sensorId;
     private long timestamp;
     private double value;
-    private ImmutableList<String> tags;
+    private List<String> tags;
 
     public SensorReading() {
     }
 
     public SensorReading(final long sensorId, final long timestamp, final long value) {
-        this(sensorId, timestamp, value, ImmutableList.<String>of());
+        this(sensorId, timestamp, value, Lists.<String>newArrayList());
     }
 
-    public SensorReading(final long sensorId, final long timestamp , final long value, final ImmutableList<String> tags) {
+    public SensorReading(final long sensorId, final long timestamp , final long value, final List<String> tags) {
         this.sensorId = sensorId;
         this.timestamp = timestamp;
         this.value = value;
@@ -39,7 +41,7 @@ public class SensorReading {
     }
 
     @JsonProperty
-    public ImmutableList<String> getTags() {
+    public List<String> getTags() {
         return tags;
     }
 }
