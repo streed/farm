@@ -23,9 +23,7 @@ public class TestTask implements Task {
     @Override
     public Options getOptions() {
         Options options = new Options();
-
-        options.addOption("test", false, "Test option to a test task");
-
+        options.addOption("testing", false, "Test option to a test task");
         return options;
     }
 

@@ -55,11 +55,15 @@ public abstract class TaskRunner {
 
                 Object obj = injector.getInstance(taskClass);
                 Task task = (Task) obj;
-                task.setup(basicParser.parse(task.getOptions(), args));
-                task.run();
+                Options taskOptions = task.getOptions();
+                for (Object option : options.getOptions()) {
+                    taskOptions.addOption((Option)option);
+                }
+                task.setup(basicParser.parse(taskOptions, args));
             } catch (UnrecognizedOptionException exception) {
                 HelpFormatter helpFormatter = new HelpFormatter();
                 helpFormatter.printHelp("task runner", options);
+                System.err.println(exception.getMessage());
             }
         }
     }
