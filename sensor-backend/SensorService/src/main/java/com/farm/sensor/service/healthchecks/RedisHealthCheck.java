@@ -15,7 +15,7 @@ public class RedisHealthCheck extends InjectableHealthCheck {
 
     @Override
     public String getName() {
-        return "Redis Check";
+        return "RedisHealthCheck";
     }
 
     @Override
