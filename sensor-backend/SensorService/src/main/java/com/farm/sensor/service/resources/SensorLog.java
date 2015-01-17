@@ -11,6 +11,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import java.io.IOException;
 import java.util.List;
 
 @Path("/sensor")
@@ -24,14 +25,14 @@ public class SensorLog {
     }
 
     @POST
-    public void saveValues(final @Valid SensorSlug sensorSlug) throws SensorServiceException {
+    public void saveValues(final @Valid SensorSlug sensorSlug) throws SensorServiceException, IOException {
         sensorManager.publish(sensorSlug);
     }
 
 
     @GET
     @Path("/{ownerId}/{sensorId}")
-    public SensorSlug getSensorValue(final @PathParam("ownerId") int ownerId, final @PathParam("sensorId") int sensorId) {
+    public SensorSlug getSensorValue(final @PathParam("ownerId") int ownerId, final @PathParam("sensorId") int sensorId) throws IOException {
         Preconditions.checkArgument(ownerId > 0, "OwnerId must be greater than 0");
         Preconditions.checkArgument(sensorId > 0, "OwnerId must be greater than 0");
         return sensorManager.getSensorSlug(ownerId, sensorId);
@@ -39,7 +40,7 @@ public class SensorLog {
 
     @GET
     @Path("/{ownerId}")
-    public List<SensorSlug> getSensorSlugsForUser(final @PathParam("ownerId") int ownerId) {
+    public List<SensorSlug> getSensorSlugsForUser(final @PathParam("ownerId") int ownerId) throws IOException {
         Preconditions.checkArgument(ownerId > 0, "OwnerId must be greater than 0");
         return sensorManager.getSensorSlugsForOwner(ownerId);
     }
