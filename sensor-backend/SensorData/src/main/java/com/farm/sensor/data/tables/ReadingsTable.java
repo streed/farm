@@ -40,9 +40,9 @@ public class ReadingsTable {
         }
     }
 
-    public boolean isConnected() {
-        //TODO: Figure out how to do this
-        return true;
+    public boolean isConnected() throws IOException {
+        //TODO: Fix this because it's depreceated.
+        return hTable.getConnection() != null;
     }
 
     public SensorSlug getSlug(final SensorSlugRowKey rowKey) throws IOException {
