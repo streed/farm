@@ -4,6 +4,7 @@ import com.farm.sensor.data.rowkeys.SensorSlugRowKey;
 import com.farm.sensor.data.models.SensorSlug;
 import com.farm.sensor.data.tasks.SensorCreateSchema;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -45,11 +46,15 @@ public class ReadingsTable {
         return hTable.getConnection() != null;
     }
 
-    public SensorSlug getSlug(final SensorSlugRowKey rowKey) throws IOException {
+    public Optional<SensorSlug> getSlug(final SensorSlugRowKey rowKey) throws IOException {
         Get get = new Get(rowKey.toBytes());
         Result result = hTable.get(get);
 
-        return readResult(result);
+        if (result.isEmpty()) {
+            return Optional.absent();
+        } else {
+            return Optional.of(readResult(result));
+        }
     }
 
     public List<SensorSlug> getSlugsForOwner(final SensorSlugRowKey rowKey) throws IOException {

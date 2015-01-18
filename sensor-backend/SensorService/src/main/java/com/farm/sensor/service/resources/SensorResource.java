@@ -3,6 +3,7 @@ package com.farm.sensor.service.resources;
 import com.farm.sensor.data.exceptions.SensorServiceException;
 import com.farm.sensor.data.managers.SensorManager;
 import com.farm.sensor.data.models.SensorSlug;
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 
@@ -15,12 +16,12 @@ import java.io.IOException;
 import java.util.List;
 
 @Path("/sensor")
-public class SensorLog {
+public class SensorResource {
 
     private final SensorManager sensorManager;
 
     @Inject
-    public SensorLog(final SensorManager sensorManager) {
+    public SensorResource(final SensorManager sensorManager) {
         this.sensorManager = sensorManager;
     }
 
@@ -32,7 +33,7 @@ public class SensorLog {
 
     @GET
     @Path("/{ownerId}/{sensorId}")
-    public SensorSlug getSensorValue(final @PathParam("ownerId") int ownerId, final @PathParam("sensorId") int sensorId) throws IOException {
+    public Optional<SensorSlug> getSensorValue(final @PathParam("ownerId") int ownerId, final @PathParam("sensorId") int sensorId) throws IOException {
         Preconditions.checkArgument(ownerId > 0, "OwnerId must be greater than 0");
         Preconditions.checkArgument(sensorId > 0, "SensorId must be greater than 0");
         return sensorManager.getSensorSlug(ownerId, sensorId);

@@ -4,6 +4,7 @@ import com.farm.sensor.data.tables.ReadingsTable;
 import com.farm.sensor.data.exceptions.SensorServiceException;
 import com.farm.sensor.data.models.SensorSlug;
 import com.farm.sensor.data.rowkeys.SensorSlugRowKey;
+import com.google.common.base.Optional;
 import com.google.inject.Inject;
 
 import java.io.IOException;
@@ -24,7 +25,7 @@ public class SensorManager {
         sensorSlugPublisher.publish(sensorSlug);
     }
 
-    public SensorSlug getSensorSlug(final int ownerId, final int sensorId) throws IOException {
+    public Optional<SensorSlug> getSensorSlug(final int ownerId, final int sensorId) throws IOException {
         return readingsTable.getSlug(new SensorSlugRowKey(ownerId, sensorId));
     }
 
