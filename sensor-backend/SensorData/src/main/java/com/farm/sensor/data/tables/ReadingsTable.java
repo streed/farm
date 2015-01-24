@@ -2,7 +2,7 @@ package com.farm.sensor.data.tables;
 
 import com.farm.sensor.data.rowkeys.SensorSlugRowKey;
 import com.farm.sensor.data.models.SensorSlug;
-import com.farm.sensor.data.tasks.SensorCreateSchema;
+import com.farm.sensor.data.tables.schema.ReadingsTableSchema;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
@@ -30,7 +30,7 @@ public class ReadingsTable {
     }
 
     public void connect() throws IOException {
-        hTable = new HTable(configuration, SensorCreateSchema.TableNames.READINGS.getName());
+        hTable = new HTable(configuration, ReadingsTableSchema.TableNames.READINGS.getName());
     }
 
     public void shutdown() throws Exception {
@@ -61,7 +61,7 @@ public class ReadingsTable {
         Scan scan = new Scan();
 
         scan.setStartRow(rowKey.toBytes());
-        scan.addFamily(SensorCreateSchema.ColumnFamiles.READINGS_BODY.getName().getBytes());
+        scan.addFamily(ReadingsTableSchema.ColumnFamiles.READINGS_BODY.getName().getBytes());
 
         ResultScanner results = hTable.getScanner(scan);
 
@@ -77,7 +77,7 @@ public class ReadingsTable {
         SensorSlugRowKey sensorSlugRowKey = new SensorSlugRowKey(sensorSlug.getOwnerId(), sensorSlug.getTimestamp());
         Put put = new Put(sensorSlugRowKey.toBytes());
 
-        put.add(SensorCreateSchema.ColumnFamiles.READINGS_BODY.getName().getBytes(),
+        put.add(ReadingsTableSchema.ColumnFamiles.READINGS_BODY.getName().getBytes(),
                 "reading".getBytes(),
                 objectMapper.writeValueAsBytes(sensorSlug));
 
@@ -92,7 +92,7 @@ public class ReadingsTable {
     private SensorSlug readResult(Result result) throws IOException {
         return objectMapper.readValue(
                 result.getValue(
-                        SensorCreateSchema.ColumnFamiles.READINGS_BODY.getName().getBytes(),
+                        ReadingsTableSchema.ColumnFamiles.READINGS_BODY.getName().getBytes(),
                         "reading".getBytes()),
                 SensorSlug.class);
     }

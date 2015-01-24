@@ -31,5 +31,6 @@
     <modules>
         <module>SensorData</module>
         <module>SensorService</module>
+        <module>SensorTasks</module>
     </modules>
 </project>
