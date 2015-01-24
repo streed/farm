@@ -27,16 +27,16 @@ public class SensorResource {
 
     @POST
     public void saveValues(final @Valid SensorSlug sensorSlug) throws SensorServiceException, IOException {
+        Preconditions.checkArgument(sensorSlug.getOwnerId() > 0, "OwnerId must be greater than 0");
         sensorManager.publish(sensorSlug);
     }
 
 
     @GET
-    @Path("/{ownerId}/{sensorId}")
-    public Optional<SensorSlug> getSensorValue(final @PathParam("ownerId") int ownerId, final @PathParam("sensorId") int sensorId) throws IOException {
+    @Path("/{ownerId}/{timestamp}")
+    public Optional<SensorSlug> getSensorValue(final @PathParam("ownerId") int ownerId, final @PathParam("timestamp") long timestamp) throws IOException {
         Preconditions.checkArgument(ownerId > 0, "OwnerId must be greater than 0");
-        Preconditions.checkArgument(sensorId > 0, "SensorId must be greater than 0");
-        return sensorManager.getSensorSlug(ownerId, sensorId);
+        return sensorManager.getSensorSlug(ownerId, timestamp);
     }
 
     @GET

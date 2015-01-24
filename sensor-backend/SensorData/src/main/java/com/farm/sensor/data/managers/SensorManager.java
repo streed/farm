@@ -25,8 +25,8 @@ public class SensorManager {
         sensorSlugPublisher.publish(sensorSlug);
     }
 
-    public Optional<SensorSlug> getSensorSlug(final int ownerId, final int sensorId) throws IOException {
-        return readingsTable.getSlug(new SensorSlugRowKey(ownerId, sensorId));
+    public Optional<SensorSlug> getSensorSlug(final int ownerId, final long timestamp) throws IOException {
+        return readingsTable.getSlug(new SensorSlugRowKey(ownerId, timestamp));
     }
 
     public List<SensorSlug> getSensorSlugsForOwner(final int ownerId) throws IOException {
