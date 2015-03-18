@@ -1,0 +1,30 @@
+{
+  "ownerId": 1,
+  "timestamp": 1426653571,
+  "readings": [
+    {
+      "sensorId": 1,
+      "timestamp": 1426653571,
+      "value": 1.0,
+      "tags": ["test", "testing"]
+    },
+    {
+      "sensorId": 2,
+      "timestamp": 1426653571,
+      "value":0.75,
+      "tags": ["test", "testing"]
+    },
+    {
+      "sensorId": 3,
+      "timestamp": 1426653571,
+      "value": 0.5,
+      "tags": ["test", "testing"]
+    },
+    {
+      "sensorId": 4,
+      "timestamp": 1426653571,
+      "value": 1.5,
+      "tags": ["test", "testing"]
+    }
+  ]
+}

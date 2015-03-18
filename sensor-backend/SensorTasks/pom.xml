@@ -75,7 +75,7 @@
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.farm.sensor.service.SensorServiceRunner</mainClass>
+                                    <mainClass>com.farm.sensor.tasks.SensorTaskRunner</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>

@@ -38,12 +38,11 @@ public abstract class TaskRunner {
     }
 
     public void run(String [] args) throws Exception {
+        configure();
         if (args.length == 0) {
             HelpFormatter helpFormatter = new HelpFormatter();
-            helpFormatter.printHelp("task runner", options);
+            helpFormatter.printHelp("Task Runner by HeqetLabs", options);
         } else {
-            configure();
-
             try {
                 BasicParser basicParser = new BasicParser();
                 CommandLine commandLine = basicParser.parse(options, args);
@@ -79,6 +78,10 @@ public abstract class TaskRunner {
 
         if (commands.size() > 1) {
             throw new RuntimeException("Please only specify a single command to run");
+        } else if (commands.size() == 0) {
+          HelpFormatter helpFormatter = new HelpFormatter();
+          helpFormatter.printHelp("task runner", options);
+          throw new RuntimeException("No valid command found.");
         }
 
         return commands.get(0);
