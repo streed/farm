@@ -50,7 +50,9 @@ public class SensorSlugPublisher {
     //TODO: Make this an executor pool, a single thread should suffice for now.
     private void startPublisher() {
         publisher = new Publisher(objectMapper, jedisPool, channels);
-        threadFactory.newThread(publisher);
+        Thread thread = threadFactory.newThread(publisher);
+        thread.setDaemon(true);
+        thread.start();
     }
 
     private static class Publisher implements Runnable {

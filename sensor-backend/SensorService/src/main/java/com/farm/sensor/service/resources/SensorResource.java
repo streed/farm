@@ -8,14 +8,14 @@ import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 
 import javax.validation.Valid;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.util.List;
 
 @Path("/sensor")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public class SensorResource {
 
     private final SensorManager sensorManager;
